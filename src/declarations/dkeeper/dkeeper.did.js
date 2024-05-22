@@ -1,5 +1,9 @@
 export const idlFactory = ({ IDL }) => {
-  const Note = IDL.Record({ 'title' : IDL.Text, 'content' : IDL.Text });
+  const Note = IDL.Record({
+    'title' : IDL.Text,
+    'content' : IDL.Text,
+    'owner' : IDL.Principal,
+  });
   return IDL.Service({
     'createNote' : IDL.Func([IDL.Text, IDL.Text], [], ['oneway']),
     'readNotes' : IDL.Func([], [IDL.Vec(Note)], ['query']),

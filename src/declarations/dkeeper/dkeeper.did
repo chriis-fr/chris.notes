@@ -1,6 +1,7 @@
 type Note = 
  record {
    content: text;
+   owner: principal;
    title: text;
  };
 service : {
