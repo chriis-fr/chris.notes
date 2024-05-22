@@ -19,15 +19,19 @@ function App() {
 
   const [notes, setNotes] = useState([]);
 
-  function addNote(newNote) {
-    if(!newNote.content.length){
-      alert("Content cannot be empty")
-      return null;
+  async function addNote(newNote) {
+    try {
+      if(!newNote.content.length){
+        throw "Content cannot be empty";
+      }
+      await dkeeper.createNote(newNote.title, newNote.content)
+      setNotes(prevNotes => {
+        return [newNote, ...prevNotes];
+      }); 
+    } catch (error) {
+      console.log(error)
+      alert("Failed to add note. Error: " + error)
     }
-    setNotes(prevNotes => {
-      dkeeper.createNote(newNote.title, newNote.content)
-      return [newNote, ...prevNotes];
-    });
   }
 
   async function deleteNote(id) {
