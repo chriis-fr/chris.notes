@@ -19,20 +19,33 @@ function App() {
 
   const [notes, setNotes] = useState([]);
 
-  function addNote(newNote) {
-    setNotes(prevNotes => {
-      dkeeper.createNote(newNote.title, newNote.content)
-      return [newNote, ...prevNotes];
-    });
+  async function addNote(newNote) {
+    try {
+      if(!newNote.content.length){
+        throw "Content cannot be empty";
+      }
+      await dkeeper.createNote(newNote.title, newNote.content)
+      setNotes(prevNotes => {
+        return [newNote, ...prevNotes];
+      }); 
+    } catch (error) {
+      console.log(error)
+      alert("Failed to add note. Error: " + error)
+    }
   }
 
-  function deleteNote(id) {
-    dkeeper.removeNote(id)
+  async function deleteNote(id) {
+    try {
+      await dkeeper.removeNote(id)
     setNotes(prevNotes => {
       return prevNotes.filter((noteItem, index) => {
         return index !== id;
       });
     });
+    } catch (error) {
+      console.log(error)
+      alert("Failed to delete note")
+    }
   }
 
   return (
